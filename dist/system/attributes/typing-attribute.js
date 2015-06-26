@@ -1,7 +1,7 @@
 System.register(['aurelia-framework'], function (_export) {
   'use strict';
 
-  var inject, customAttribute, bindable, FilesAttribute;
+  var inject, customAttribute, bindable, TypingAttribute;
 
   var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
@@ -16,11 +16,13 @@ System.register(['aurelia-framework'], function (_export) {
       bindable = _aureliaFramework.bindable;
     }],
     execute: function () {
-      FilesAttribute = (function () {
+      TypingAttribute = (function () {
         var _instanceInitializers = {};
 
-        function FilesAttribute(element) {
-          _classCallCheck(this, _FilesAttribute);
+        function TypingAttribute(element) {
+          var _this = this;
+
+          _classCallCheck(this, _TypingAttribute);
 
           _defineDecoratedPropertyDescriptor(this, 'onStarted', _instanceInitializers);
 
@@ -31,40 +33,37 @@ System.register(['aurelia-framework'], function (_export) {
           this.currentlyTyping = false;
           this.timeoutHandler = null;
 
+          this.timeoutProxyCallback = function () {
+            _this.currentlyTyping = false;
+            _this.onStopped(_this.element.value);
+          };
+
+          this.onKeyPressedCallback = function () {
+            if (!_this.currentlyTyping) {
+              _this.currentlyTyping = true;
+              _this.onStarted(_this.element.value);
+            }
+
+            if (_this.timeoutHandler) {
+              clearTimeout(_this.timeoutHandler);
+            }
+
+            _this.timeoutHandler = setTimeout(_this.timeoutProxyCallback, _this.timeout);
+          };
+
           this.element = element;
         }
 
-        var _FilesAttribute = FilesAttribute;
+        var _TypingAttribute = TypingAttribute;
 
-        _createDecoratedClass(_FilesAttribute, [{
+        _createDecoratedClass(_TypingAttribute, [{
           key: 'bind',
           value: function bind() {
-            if (!this.onStated && !this.onStopped) {
+            console.log('THIS', this);
+            if (!this.onStarted && !this.onStopped) {
               return;
             }
             this.element.onkeypress = this.onKeyPressedCallback;
-          }
-        }, {
-          key: 'timeoutProxyCallback',
-          value: function timeoutProxyCallback() {
-            this.currentlyTyping = false;
-            this.onStopped(this.element.value);
-          }
-        }, {
-          key: 'onKeyPressedCallback',
-          value: function onKeyPressedCallback() {
-            var timeoutHandler;
-
-            if (!this.currentlyTyping) {
-              this.currentlyTyping = true;
-              this.onStated(this.element.value);
-            }
-
-            if (this.timeoutHandler) {
-              clearTimeout(this.timeoutHandler);
-            }
-
-            this.timeoutHandler = setTimeout(timeoutProxyCallback, timeout);
           }
         }, {
           key: 'onStarted',
@@ -83,12 +82,12 @@ System.register(['aurelia-framework'], function (_export) {
           enumerable: true
         }], null, _instanceInitializers);
 
-        FilesAttribute = inject(Element)(FilesAttribute) || FilesAttribute;
-        FilesAttribute = customAttribute('typing')(FilesAttribute) || FilesAttribute;
-        return FilesAttribute;
+        TypingAttribute = inject(Element)(TypingAttribute) || TypingAttribute;
+        TypingAttribute = customAttribute('typing')(TypingAttribute) || TypingAttribute;
+        return TypingAttribute;
       })();
 
-      _export('FilesAttribute', FilesAttribute);
+      _export('TypingAttribute', TypingAttribute);
     }
   };
 });

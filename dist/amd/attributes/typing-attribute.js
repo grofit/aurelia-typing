@@ -11,11 +11,13 @@ define(['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
 
   function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _descriptor = descriptors[key]; if (!_descriptor) return; var descriptor = {}; for (var _key in _descriptor) descriptor[_key] = _descriptor[_key]; descriptor.value = descriptor.initializer.call(target); Object.defineProperty(target, key, descriptor); }
 
-  var FilesAttribute = (function () {
+  var TypingAttribute = (function () {
     var _instanceInitializers = {};
 
-    function FilesAttribute(element) {
-      _classCallCheck(this, _FilesAttribute);
+    function TypingAttribute(element) {
+      var _this = this;
+
+      _classCallCheck(this, _TypingAttribute);
 
       _defineDecoratedPropertyDescriptor(this, 'onStarted', _instanceInitializers);
 
@@ -26,40 +28,37 @@ define(['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
       this.currentlyTyping = false;
       this.timeoutHandler = null;
 
+      this.timeoutProxyCallback = function () {
+        _this.currentlyTyping = false;
+        _this.onStopped(_this.element.value);
+      };
+
+      this.onKeyPressedCallback = function () {
+        if (!_this.currentlyTyping) {
+          _this.currentlyTyping = true;
+          _this.onStarted(_this.element.value);
+        }
+
+        if (_this.timeoutHandler) {
+          clearTimeout(_this.timeoutHandler);
+        }
+
+        _this.timeoutHandler = setTimeout(_this.timeoutProxyCallback, _this.timeout);
+      };
+
       this.element = element;
     }
 
-    var _FilesAttribute = FilesAttribute;
+    var _TypingAttribute = TypingAttribute;
 
-    _createDecoratedClass(_FilesAttribute, [{
+    _createDecoratedClass(_TypingAttribute, [{
       key: 'bind',
       value: function bind() {
-        if (!this.onStated && !this.onStopped) {
+        console.log('THIS', this);
+        if (!this.onStarted && !this.onStopped) {
           return;
         }
         this.element.onkeypress = this.onKeyPressedCallback;
-      }
-    }, {
-      key: 'timeoutProxyCallback',
-      value: function timeoutProxyCallback() {
-        this.currentlyTyping = false;
-        this.onStopped(this.element.value);
-      }
-    }, {
-      key: 'onKeyPressedCallback',
-      value: function onKeyPressedCallback() {
-        var timeoutHandler;
-
-        if (!this.currentlyTyping) {
-          this.currentlyTyping = true;
-          this.onStated(this.element.value);
-        }
-
-        if (this.timeoutHandler) {
-          clearTimeout(this.timeoutHandler);
-        }
-
-        this.timeoutHandler = setTimeout(timeoutProxyCallback, timeout);
       }
     }, {
       key: 'onStarted',
@@ -78,10 +77,10 @@ define(['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
       enumerable: true
     }], null, _instanceInitializers);
 
-    FilesAttribute = (0, _aureliaFramework.inject)(Element)(FilesAttribute) || FilesAttribute;
-    FilesAttribute = (0, _aureliaFramework.customAttribute)('typing')(FilesAttribute) || FilesAttribute;
-    return FilesAttribute;
+    TypingAttribute = (0, _aureliaFramework.inject)(Element)(TypingAttribute) || TypingAttribute;
+    TypingAttribute = (0, _aureliaFramework.customAttribute)('typing')(TypingAttribute) || TypingAttribute;
+    return TypingAttribute;
   })();
 
-  exports.FilesAttribute = FilesAttribute;
+  exports.TypingAttribute = TypingAttribute;
 });

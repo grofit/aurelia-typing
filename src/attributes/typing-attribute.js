@@ -2,7 +2,7 @@ import {inject, customAttribute, bindable } from 'aurelia-framework';
 
 @customAttribute('typing')
 @inject(Element)
-export class FilesAttribute {
+export class TypingAttribute {
   @bindable onStarted;
   @bindable onStopped;
   @bindable timeout;
@@ -15,26 +15,25 @@ export class FilesAttribute {
   }
 
   bind() {
-    if(!this.onStated && !this.onStopped) { return; }
+    console.log("THIS", this);
+    if(!this.onStarted && !this.onStopped) { return; }
     this.element.onkeypress = this.onKeyPressedCallback;
   }
 
-  timeoutProxyCallback() {
+  timeoutProxyCallback = () => {
     this.currentlyTyping = false;
     this.onStopped(this.element.value);
   };
 
-  onKeyPressedCallback() {
-    var timeoutHandler;
-
+  onKeyPressedCallback = () => {
     if(!this.currentlyTyping) {
       this.currentlyTyping = true;
-      this.onStated(this.element.value);
+      this.onStarted(this.element.value);
     }
 
     if(this.timeoutHandler)
     { clearTimeout(this.timeoutHandler); }
 
-    this.timeoutHandler = setTimeout(timeoutProxyCallback, timeout);
+    this.timeoutHandler = setTimeout(this.timeoutProxyCallback, this.timeout);
   }
 }
