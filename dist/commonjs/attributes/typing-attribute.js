@@ -12,8 +12,6 @@ function _defineDecoratedPropertyDescriptor(target, key, descriptors) { var _des
 
 var _aureliaFramework = require('aurelia-framework');
 
-var _handlersFileHandlerJs = require('../handlers/file-handler.js');
-
 var FilesAttribute = (function () {
   var _instanceInitializers = {};
 

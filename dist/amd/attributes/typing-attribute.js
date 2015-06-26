@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-framework', '../handlers/file-handler.js'], function (exports, _aureliaFramework, _handlersFileHandlerJs) {
+define(['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
   'use strict';
 
   Object.defineProperty(exports, '__esModule', {
