@@ -4,7 +4,7 @@ A simple attribute for aurelia to allow you to listen for callbacks when a user 
 
 ## Installing
 
-`jspm install grofit/aurelia-typing`
+`jspm install github:grofit/aurelia-typing`
 
 Then register the plugin
 
