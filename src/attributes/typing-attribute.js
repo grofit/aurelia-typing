@@ -1,5 +1,4 @@
 import {inject, customAttribute, bindable } from 'aurelia-framework';
-import { FileHandler } from "../handlers/file-handler.js";
 
 @customAttribute('typing')
 @inject(Element)
