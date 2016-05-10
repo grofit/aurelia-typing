@@ -1,6 +1,6 @@
 {
   "name": "aurelia-typing",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "registry": "jspm",
   "description": "A simple attribute for input elements to indicate if the user has started/finished typing",
   "keywords": [
