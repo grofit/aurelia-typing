@@ -1,0 +1,7 @@
+<template>
+    <h1>Typing for winners</h1>
+    <input typing="on-started.bind: typingStarted; on-stopped.bind: typingStopped"/>
+    <ul>
+        <li repeat.for="log of logs">${log}</li>
+    </ul>
+</template>

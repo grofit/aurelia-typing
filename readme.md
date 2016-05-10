@@ -8,7 +8,7 @@ A simple attribute for aurelia to allow you to listen for callbacks when a user 
 
 Then register the plugin
 
-`aurelia.user.plugin("grofit/aurelia-typing")`
+`aurelia.user.plugin("aurelia-typing")`
 
 ## Example
 
